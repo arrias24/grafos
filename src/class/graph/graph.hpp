@@ -16,7 +16,7 @@ public:
     Graph(int numVertices);
     ~Graph();
     void addVertex(T vertex);
-    void follow(T follower, T followed);
+    bool follow(T follower, T followed);
     void unfollow(T follower, T followed);
     void printFollowers();
     T getVertex(int index);

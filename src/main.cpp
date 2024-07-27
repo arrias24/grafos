@@ -1,52 +1,58 @@
 #include <iostream>
 #include "../src/model/person.h"
 #include "../src/class/graph/graph.cpp"
+#include "../src/view/menuOptions.cpp"
 using namespace std;
 
 int main()
 {   
     system("cls");
-    int numPersonas;
-    cout << "Ingrese el numero de personas: ";
-    cin >> numPersonas;
 
-    Graph<Persona> grafo(numPersonas);
+    int numPersonas = ingresarNumPerson(); //Pedimos la cantidad de personas
+
+    Graph<Persona> grafo(numPersonas); // Creamos el grafo con sus numero de vertices
+
+    //insertamos las personas dentro del grafo
+
+    system("cls");
+
+    cout<<"INGRESAR LOS DATOS."<<endl<<endl;
 
     for (int i = 0; i < numPersonas; ++i) {
         Persona p;
-        cout<< "Ingrese el nombre y apellido de la persona "<<i + 1<<": ";
-        cin>>p.nombre>>p.apellido;
+        cout<<"Ingresa el nombre y apellido de la persona "<<i + 1<<": ";cin>>p.nombre>>p.apellido;
         grafo.addVertex(p);
     }
 
     int opcion;
     do {
-        system("cls");
-        cout<<"___Menu:___"<<endl<<endl;
-        cout<<"1. Follow"<<endl;
-        cout<<"2. Unfollow"<<endl;
-        cout<<"3. Imprimir seguidores"<<endl;
-        cout<<"4. Camino mas corto"<<endl;
-        cout<<"5. Salir"<<endl;
-        cout<<"Ingrese una opcion: "<<endl;
-        cin>>opcion;
-
-        if (opcion == 1) 
+        opcion = operationsMenu();
+        
+        if (opcion == 1) //follow
         {
             system("cls");
+
             string nombreFollower, apellidoFollower;
             string nombreFollowed, apellidoFollowed;
-            cout<<"Ingrese el nombre y apellido de la persona que sigue: ";
-            cin>>nombreFollower>>apellidoFollower;
-            cout<<"Ingrese el nombre y apellido de la persona a la que sigue: ";
-            cin>> nombreFollowed >>apellidoFollowed;
 
+            cout<<"Ingrese el nombre y apellido de la persona que sigue: ";cin>>nombreFollower>>apellidoFollower;
+            cout<<"Ingrese el nombre y apellido de la persona a la que sigue: ";cin>> nombreFollowed >>apellidoFollowed;
+            
             Persona follower = {nombreFollower, apellidoFollower};
             Persona followed = {nombreFollowed, apellidoFollowed};
 
-            grafo.follow(follower, followed);
-            cout<<"Proceso satisfactorio."<<endl<<endl;
+            bool resultado = grafo.follow(follower, followed);cout<<endl;
+
+            if(resultado)
+            {
+                cout<<"Operacion exitosa"<<endl<<endl;
+            }
+            else
+            {
+                cout<<"Vuelve a intentarlo."<<endl;
+            }
             system("pause"); 
+            
         } 
         else if (opcion == 2) 
         {
@@ -62,7 +68,7 @@ int main()
             Persona followed = {nombreFollowed, apellidoFollowed};
 
             grafo.unfollow(follower, followed);
-            cout<<"Proceso satisfactorio."<<endl<<endl;
+            cout<<endl<<"Proceso satisfactorio."<<endl<<endl;
             system("pause");             
         }
         else if (opcion == 3)

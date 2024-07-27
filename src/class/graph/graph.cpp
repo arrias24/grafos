@@ -37,23 +37,41 @@ void Graph<T>::addVertex(T vertex) {
 }
 
 template <class T>
-void Graph<T>::follow(T follower, T followed) {
+bool Graph<T>::follow(T follower, T followed) {
+
+    if(follower.nombre == followed.nombre && follower.apellido == followed.apellido)
+    {
+        cout<<endl<<"[ERROR] - No puedes seguirte a ti mismo."<<endl;
+        return false;
+    }
+
     int followerIndex = getIndex(follower);
     int followedIndex = getIndex(followed);
-    if (followerIndex != -1 && followedIndex != -1) {
+
+    if (followerIndex != -1 && followedIndex != -1) 
+    {
         adjMatrix[followerIndex][followedIndex] = 1;
-    } else {
-        cout << "[ERROR] - Uno o ambos vertices no existen" << endl;
+        return true;
+    } 
+    else 
+    {
+        cout<<endl<<"[ERROR] - Uno o ambos vertices no existen"<<endl;
+        return false;
     }
 }
 
 template <class T>
 void Graph<T>::unfollow(T follower, T followed) {
+
     int followerIndex = getIndex(follower);
     int followedIndex = getIndex(followed);
-    if (followerIndex != -1 && followedIndex != -1) {
+
+    if (followerIndex != -1 && followedIndex != -1) 
+    {
         adjMatrix[followerIndex][followedIndex] = 0;
-    } else {
+    } 
+    else 
+    {
         cout << "[ERROR] - Uno o ambos vértices no existen" << endl;
     }
 }
@@ -61,13 +79,13 @@ void Graph<T>::unfollow(T follower, T followed) {
 template <class T>
 void Graph<T>::printFollowers() {
     for (int i = 0; i < currentVertexCount; i++) {
-        cout << "Followers de " << vertices[i].nombre << ": ";
+        cout << "Followers de " <<vertices[i].nombre<<" "<<vertices[i].apellido<<": ";
         for (int j = 0; j < currentVertexCount; j++) {
             if (adjMatrix[j][i] == 1) {
-                cout << vertices[j].nombre << " " << vertices[j].apellido << ", ";
+                cout <<vertices[j].nombre <<" " <<vertices[j].apellido << ", ";
             }
         }
-        cout << endl;
+        cout<<endl;
     }
 }
 
@@ -95,7 +113,7 @@ void Graph<T>::shortestPath(T startVertex, T endVertex)
 
     if (startIndex == -1 || endIndex == -1) 
     {
-        cout << "[ERROR] - Uno o ambos vertices no existen" << endl;
+        cout<<"[ERROR] - Uno o ambos vertices no existen"<<endl;
         return;
     }
 
@@ -146,11 +164,11 @@ void Graph<T>::shortestPath(T startVertex, T endVertex)
 
     if (dist[endIndex] == max) 
     {
-        cout << "No existe un camino desde " << startVertex.nombre << " a " << endVertex.nombre << endl;
+        cout<<endl<<"No existe un camino desde "<<startVertex.nombre<< " a "<<endVertex.nombre<<endl;
     } 
     else 
     {
-        cout << "El camino mas corto desde " << startVertex.nombre << " a " << endVertex.nombre << " es: ";
+        cout<<"El camino mas corto desde "<<startVertex.nombre<<" a "<<endVertex.nombre<<" es: ";
         int* path = new int[numVertices];
         int count = 0;
         for (int at = endIndex; at != -1; at = prev[at]) 
@@ -162,9 +180,9 @@ void Graph<T>::shortestPath(T startVertex, T endVertex)
         for (int i = count - 1; i >= 0; --i) 
         {
             if (i < count - 1) cout << " -> ";
-            cout << vertices[path[i]].nombre << " " << vertices[path[i]].apellido;
+            cout <<vertices[path[i]].nombre << " " << vertices[path[i]].apellido;
         }
-        cout << endl;
+        cout<<endl<<endl;
         
         delete[] path;
     }
